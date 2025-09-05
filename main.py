@@ -181,9 +181,9 @@ def schools_keyboard():
 
 def roles_keyboard():
     roles = [
-        "👨‍👩‍👦 Ата-ана / Родитель",
-        "🧑‍🎓 Оқушы / Ученик",
-        "👨‍🏫 Қызметкер / Сотрудник",
+        "Ата-ана / Родитель",
+        "Оқушы / Ученик",
+        "Қызметкер / Сотрудник",
     ]
     return kb(roles, row_size=1)
 
@@ -438,7 +438,7 @@ COMMON_PLACE_PROBLEMS = [
     "Другое / Басқа",
 ]
 
-CONDITION_3 = ["Нашар / Плохое", "Орташа / Среднее", "Жақсы / Хорошее"]
+CONDITION_3 = ["❌ Нашар / Плохое", "⚠ Орташа / Среднее", "✅ Жақсы / Хорошее"]
 
 @router.message(Survey.clean_branch)
 async def clean_branch(message: types.Message, state: FSMContext):
@@ -1034,7 +1034,7 @@ def choose_block(data: dict) -> str:
             return "S3"
     # Food → Q4
     if topic.startswith("🍽"):
-        return "Q4"
+        return "S4"
     # Study → Q1/Q2/Q3
     if topic.startswith("🔔"):
         st = (data.get("study_topic") or "").lower()
@@ -1053,13 +1053,13 @@ def choose_block(data: dict) -> str:
             return "S5"
         if cat.startswith("👮"):
             return "S6"
-        return "S4"
+        return "S7"
     # Ideas → P2
     if topic.startswith("💡"):
         return "P2"
     # Tech → S7
     if topic.startswith("🖥"):
-        return "S7"
+        return "Q4"
     # Health → S8
     if topic.startswith("🏥"):
         return "S8"
@@ -1119,7 +1119,7 @@ def build_payload(block: str, data: dict) -> dict:
             dv("Action"): "",
             dv("Status"): "",
         })
-    elif block == "S4":  # hazards
+    elif block == "S7":  # hazards
         payload.update({
             dv("Problem"): str(data.get("security_hazard_issue", "")),
             dv("Condition"): "",
@@ -1139,7 +1139,7 @@ def build_payload(block: str, data: dict) -> dict:
             dv("Action"): "",
             dv("Status"): "",
         })
-    elif block == "S7":  # tech
+    elif block == "Q4":  # tech
         room = data.get("tech_room")
         prob = str(data.get("tech_issue", "")) + (f" | Кабинет: {room}" if room else "")
         payload.update({
@@ -1181,7 +1181,7 @@ def build_payload(block: str, data: dict) -> dict:
             dv("Action"): "",
             dv("Status"): "",
         })
-    elif block == "Q4":  # food
+    elif block == "S4":  # food
         payload.update({
             dv("Problem"): str(data.get("food_problem", "")),
             dv("Action"): "",
